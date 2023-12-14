@@ -53,6 +53,7 @@ class Convert():
                 event.add('dtstart', parser.parse("%s %s" % (self.get_nearest_date(start_date, time["day"]), time["startAt"])))
                 event.get('dtstart').params['TZID'] = 'Asia/Seoul'
                 event.add('dtend', parser.parse("%s %s" % (self.get_nearest_date(start_date, time["day"]), time["endAt"])))
+                event.get('dtend').params['TZID'] = 'Asia/Seoul'
                 event.add('rrule', {'freq': 'WEEKLY', 'until': parser.parse(end_date)})
                 if time["place"] != "" and not hide_details:
                     event.add('location', time["place"])

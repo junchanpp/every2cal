@@ -5,6 +5,7 @@ import datetime
 import xml.etree.ElementTree as ElementTree
 from dateutil import parser
 from icalendar import Calendar, Event
+import uuid
 import requests
 
 
@@ -42,12 +43,15 @@ class Convert():
 
     def get_calendar(self, timetable, start_date, end_date, hide_details=False):
         cal = Calendar()
-
+        cal.add('version', '2.0')
+        cal.add('prodid', 'Naver Calendar')
         for item in timetable:
             for time in item["info"]:
                 event = Event()
                 event.add('summary', item["name"] if not hide_details else "수업")
+                event.add('uid', uuid.uuid4().hex)
                 event.add('dtstart', parser.parse("%s %s" % (self.get_nearest_date(start_date, time["day"]), time["startAt"])))
+                event.get('dtstart').params['TZID'] = 'Asia/Seoul'
                 event.add('dtend', parser.parse("%s %s" % (self.get_nearest_date(start_date, time["day"]), time["endAt"])))
                 event.add('rrule', {'freq': 'WEEKLY', 'until': parser.parse(end_date)})
                 if time["place"] != "" and not hide_details:

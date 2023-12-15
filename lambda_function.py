@@ -3,7 +3,7 @@ import everytime
 
 from convert import Convert
 def lambda_handler(event, context):
-    result = get_ics_str(event['id'], event['begin'], event['end'])
+    result = get_ics_str(event['queryStringParameters']['id'], event['queryStringParameters']['begin'], event['queryStringParameters']['end'])
     return {
         'statusCode': 200,
         'body': result.decode('utf-8')
